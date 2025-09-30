@@ -23,7 +23,7 @@ LANG = {
     "de": {
         "page_title": "Jurica's AI Chatbot",
         "title": "Jurica's AI Chatbot",
-        "subtitle": "Fragen Sie nach Juricas Erfahrungen, Fähigkeiten und Erfolgen.",
+        "subtitle": "Fragen Sie nach Jurica Erfahrungen, Fähigkeiten und Erfolgen.",
         "linkedin": "💡 *Kontaktieren Sie den echten Jurica auf [LinkedIn](https://www.linkedin.com/in/jurica-flegar-82513427/)*",
         "upload_label": "Laden Sie Ihr .pdf-Dokument hoch",
         "upload_spinner": "Dateien werden hochgeladen...",
@@ -35,10 +35,10 @@ LANG = {
         "welcome": "Hallo! Ich bin der Jurica AI Chatbot. Ich helfe Ihnen, seinen Karriereweg, Fähigkeiten und Erfolge zu erkunden. Was möchten Sie wissen?",
         "suggestions_intro": "❓Versuchen Sie, etwas wie folgt zu fragen:",
         "suggestions": [
-            "Erzählen Sie mir von Juricas Erfahrung.",
-            "Was sind Juricas wichtigste Fähigkeiten?",
-            "Beschreiben Sie Juricas letzte Position.",
-            "Was sind Juricas Karriereziele?"
+            "Erzählen Sie mir von Jurica Erfahrung.",
+            "Was sind Jurica wichtigste Fähigkeiten?",
+            "Beschreiben Sie Jurica letzte Position.",
+            "Was sind Jurica Karriereziele?"
         ]
     },
     "hr": {
