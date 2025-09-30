@@ -28,7 +28,7 @@ if col3.button("🔒"):
     st.session_state.show_admin_section = not st.session_state.show_admin_section
 
 with col1:
-    st.image("images/profile.png", width=120)
+    st.image("frontend/images/profile.png", width=120)
 
 with col2:
     st.markdown(
