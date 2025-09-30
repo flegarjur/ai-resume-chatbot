@@ -60,6 +60,10 @@ fastapi run api.py
 streamlit run app.py
 ```
 
+#### 6. Running app in Streamlit and Render
+- Create a Streamlit Cloud app pointing to frontend/app.py. Relevant secrets to set are 'API_URL' and 'ADMIN_PASSWORD_HASH'.
+- Create a Render Web Service pointing to backend/ with start command: 'uvicorn api:app --host 0.0.0.0 --port $PORT'. Relevant secrets to set are 'FRONTEND_URL' (Streamlit app URL) and 'COHERE_API_KEY'.
+
 ## Notes
 
 - Only PDF files are supported for document uploads.
@@ -69,7 +73,6 @@ streamlit run app.py
 ```
 python -c "import bcrypt; print(bcrypt.hashpw(b'mysecretpassword', bcrypt.gensalt()).decode())"
 ```
-
 - Profile image is stored under /images/profile.png.
 - LinkedIn URL can be changed within languages.py localization file.
 

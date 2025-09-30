@@ -86,8 +86,7 @@ for msg in st.session_state.chat_history:
 # --- Handle new user input ---
 query = st.chat_input(placeholder=lang["ask_placeholder"])
 if query:
-    ask(query)   
-    st.rerun()   # refresh so the new messages render in history
+    ask(query)
 
 # --- Admin Section: Password & Upload ---
 if st.session_state.show_admin_section:
