@@ -1,5 +1,4 @@
-import os
-from dotenv import load_dotenv, find_dotenv
+import streamlit as st
 from langchain_cohere import ChatCohere, CohereEmbeddings
 from langchain_chroma import Chroma
 from langchain.prompts import ChatPromptTemplate
@@ -15,8 +14,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # --- Load environment variables ---
-load_dotenv(find_dotenv())
-COHERE_API_KEY = os.getenv("COHERE_API_KEY")
+COHERE_API_KEY = st.secrets["COHERE_API_KEY"]
 if not COHERE_API_KEY:
     logger.error("COHERE_API_KEY is not set")
     raise ValueError("COHERE_API_KEY is not set")
