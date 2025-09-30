@@ -13,6 +13,10 @@ if "show_admin_section" not in st.session_state:
 if "admin_authenticated" not in st.session_state:
     st.session_state.admin_authenticated = False
 
+# --- Initialize chat history ---
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
+
 # --- Header with profile + language selector + admin button ---
 col1, col2, col3 = st.columns([1, 3, 1])
 
@@ -48,9 +52,14 @@ def ask(query: str) -> str:
         response = requests.get(f"{API_URL}/ask?query={query}")
     if response.status_code == 200:
         data = response.json()
-        return data["answer"]
+        answer = data["answer"]
     else:
-        return lang["ask_fallback"]
+        answer = lang["ask_fallback"]
+
+    # Save Q&A to session state
+    st.session_state.chat_history.append({"role": "user", "content": query})
+    st.session_state.chat_history.append({"role": "ai", "content": answer})
+    return answer
 
 # --- Suggested Questions ---
 suggestions = lang["suggestions"]
@@ -64,17 +73,21 @@ for i, question in enumerate(suggestions):
         with st.chat_message("ai"):
             st.write(answer)
 
-# --- Chat Interface ---
-with st.chat_message(name="ai", avatar="ai"):
-    st.write(lang["welcome"])
+# --- Initial welcome (only show if no history yet) ---
+if not st.session_state.chat_history:
+    with st.chat_message("ai"):
+        st.write(lang["welcome"])
 
+# --- Render all chat history ---
+for msg in st.session_state.chat_history:
+    with st.chat_message(msg["role"]):
+        st.write(msg["content"])
+
+# --- Handle new user input ---
 query = st.chat_input(placeholder=lang["ask_placeholder"])
 if query:
-    with st.chat_message("user"):
-        st.write(query)
-    answer = ask(query)
-    with st.chat_message("ai"):
-        st.write(answer)
+    ask(query)   
+    st.rerun()   # refresh so the new messages render in history
 
 # --- Admin Section: Password & Upload ---
 if st.session_state.show_admin_section:
