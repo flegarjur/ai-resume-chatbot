@@ -33,7 +33,6 @@ A **Retrieval-Augmented Generation (RAG) chatbot** that allows users to explore 
 #### 1. Clone the repository:
 ```
 git clone <repo_url>
-cd chatbot-rag
 ```
 
 #### 2. Create a virtual environment and install dependencies:
@@ -61,7 +60,7 @@ fastapi run api.py
 streamlit run app.py
 ```
 
-##Notes
+## Notes
 
 - Only PDF files are supported for document uploads.
 - The chatbot relies on Cohere’s LLM, so you need a valid API key.
@@ -74,5 +73,5 @@ python -c "import bcrypt; print(bcrypt.hashpw(b'mysecretpassword', bcrypt.gensal
 - Profile image is stored under /images/profile.png.
 - LinkedIn URL can be changed within languages.py localization file.
 
-##License
+## License
 - MIT License
