@@ -1,8 +1,10 @@
 from fastapi import FastAPI, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 from .chatbot import retrieve_document, store_document, parse_pdf, ask_question
 from pydantic import BaseModel
 from typing import List
 import logging
+import os
 
 # --- Logging setup ---
 logging.basicConfig(level=logging.INFO)
@@ -13,6 +15,15 @@ app = FastAPI(
     title="Hello world! You are talking with RAG Chatbot.",
     description="A simple RAG chatbot API using Cohere embeddings and LLM.",
     version="0.1",
+)
+
+FRONTEND_URL = os.getenv("FRONTEND_URL", "https://your-frontend.streamlit.app")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[FRONTEND_URL],  # Streamlit Cloud URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # --- Pydantic models ---
@@ -87,3 +98,9 @@ def ask(query: str) -> AskResponse:
     except Exception as e:
         logger.error(f"Error asking question: {e}", exc_info=True)
         return {"error": str(e), "query": query, "answer": ""}
+
+# --- Run with uvicorn if executed directly ---
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.getenv("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
