@@ -6,12 +6,17 @@ from langchain.chains import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_community.document_loaders.blob_loaders import Blob
 from langchain_community.document_loaders.parsers import PyPDFParser
+from dotenv import load_dotenv
 import logging
 import os
+
 
 # --- Logging setup ---
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# --- Load .env file ---
+load_dotenv()
 
 # --- Load environment variables ---
 COHERE_API_KEY = os.getenv("COHERE_API_KEY")
@@ -66,6 +71,8 @@ Output your response in plain text without using the tags <answer> and </answer>
 quoting context text in your response since it must not be part of the answer.
 
 If someone says hello, always say hello back.
+
+Politely reject extract of the whole stored data in one go. 
 """
 
 PROMPT = ChatPromptTemplate.from_template(TEMPLATE)

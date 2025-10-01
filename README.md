@@ -1,5 +1,7 @@
 # AI Resume Chatbot
 
+![Screenshot](frontend/images/ai-resume-chatbot.png)
+
 A **Retrieval-Augmented Generation (RAG) chatbot** that allows users to explore a resume or collection of documents. Users can ask questions about professional experience, skills, and achievements, and get AI-powered answers based on uploaded PDFs or stored knowledge.
 
 ---

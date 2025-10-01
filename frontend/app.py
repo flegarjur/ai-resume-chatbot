@@ -32,7 +32,7 @@ if col3.button("🔒"):
     st.session_state.show_admin_section = not st.session_state.show_admin_section
 
 with col1:
-    st.image("frontend/images/profile.png", width=120)
+    st.image("images/profile.png", width=120)
 
 with col2:
     st.markdown(
@@ -61,34 +61,66 @@ def ask(query: str) -> str:
     st.session_state.chat_history.append({"role": "ai", "content": answer})
     return answer
 
+# ---  Process a user query or suggested question ---
+def handle_question(query: str):
+    ask(query)
+
+# --- Handle PDF uploads and send to backend, display metadata ---
+def upload_documents():
+    # Only allow upload if not already done
+    if st.session_state.get("documents_uploaded", False):
+        return
+
+    uploaded_files = st.file_uploader(
+        "Select .pdf files to upload", type="pdf", accept_multiple_files=True
+    )
+    if not uploaded_files:
+        return
+
+    # Display file info before uploading
+    st.markdown("**Files to be uploaded:**")
+    for file in uploaded_files:
+        st.write(f"- {file.name} ({round(len(file.getvalue())/1024, 2)} KB)")
+
+    files = [
+        ("files", (file.name, file.getvalue(), "application/pdf"))
+        for file in uploaded_files
+    ]
+    
+    try:
+        with st.spinner("Uploading files..."):
+            response = requests.post(f"{API_URL}/documents/", files=files)
+        if response.status_code == 200:
+            st.success("Files uploaded successfully!")
+            st.session_state.documents_uploaded = True  # Set flag to prevent retrigger
+        else:
+            st.error(f"Upload failed: {response.text}")
+    except Exception as e:
+        st.error(f"Error uploading files: {e}")
+
 # --- Suggested Questions ---
-suggestions = lang["suggestions"]
 st.markdown(f"### {lang['suggestions_intro']}")
-cols = st.columns(len(suggestions))
-for i, question in enumerate(suggestions):
+cols = st.columns(len(lang["suggestions"]))
+for i, question in enumerate(lang["suggestions"]):
     if cols[i].button(question):
-        with st.chat_message("user"):
-            st.write(question)
-        answer = ask(question)
-        with st.chat_message("ai"):
-            st.write(answer)
+        handle_question(question)
 
-# --- Initial welcome (only show if no history yet) ---
+# --- Chat Interface ---
+# Add welcome message once if chat history is empty
 if not st.session_state.chat_history:
-    with st.chat_message("ai"):
-        st.write(lang["welcome"])
+    st.session_state.chat_history.append({"role": "ai", "content": lang["welcome"]})
 
-# --- Render all chat history ---
+# --- Chat input ---
+query = st.chat_input(placeholder=lang["ask_placeholder"])
+if query:
+    handle_question(query)
+
+# --- Show the messages ---
 for msg in st.session_state.chat_history:
     with st.chat_message(msg["role"]):
         st.write(msg["content"])
 
-# --- Handle new user input ---
-query = st.chat_input(placeholder=lang["ask_placeholder"])
-if query:
-    ask(query)
-
-# --- Admin Section: Password & Upload ---
+# --- Admin Section ---
 if st.session_state.show_admin_section:
     # Password check if not yet authenticated
     if not st.session_state.admin_authenticated:
@@ -99,20 +131,7 @@ if st.session_state.show_admin_section:
                 st.success("Authenticated!")
             else:
                 st.warning("Incorrect password")
-    
-    # File uploader visible only after authentication
+
+    # Show uploader only after authentication
     if st.session_state.admin_authenticated:
-        uploaded_files = st.file_uploader(
-            "Upload .pdf documents", type="pdf", accept_multiple_files=True
-        )
-        if uploaded_files:
-            files = [("files", (file.name, file.getvalue(), "application/pdf")) for file in uploaded_files]
-            try:
-                with st.spinner("Uploading files..."):
-                    response = requests.post(f"{API_URL}/documents/", files=files)
-                if response.status_code == 200:
-                    st.success("Files uploaded successfully!")
-                else:
-                    st.error("Upload failed.")
-            except Exception as e:
-                st.error(f"Error uploading files: {e}")
+        upload_documents()
