@@ -11,7 +11,7 @@ A **Retrieval-Augmented Generation (RAG) chatbot** that allows users to explore 
 - Upload PDF documents and store them in a **Chroma vector database**.
 - Ask questions and receive context-aware answers using **Cohere LLM**.
 - Predefined suggestion questions for quick exploration.
-- Multilingual support (e.g., English and German).
+- UI Multilingual support (e.g., English and German).
 - Lightweight **Streamlit web app** interface.
 - REST API with **FastAPI** for programmatic access.
 - Profile header with image and optional external link.
@@ -42,7 +42,8 @@ git clone <repo_url>
 python -m venv .venv
 source .venv/bin/activate  # Linux/macOS
 .venv\Scripts\activate     # Windows
-pip install -r requirements.txt
+pip install -r frontend/requirements.txt
+pip install -r backend/requirements.txt
 ```
 
 #### 3. Set environment variables in ./streamlit/secrets.toml:
@@ -67,8 +68,7 @@ streamlit run app.py
 - Create a Render Web Service pointing to backend/ with start command: 'uvicorn api:app --host 0.0.0.0 --port $PORT'. Relevant secrets to set are 'FRONTEND_URL' (Streamlit app URL) and 'COHERE_API_KEY'.
 
 ## Notes
-
-- Only PDF files are supported for document uploads.
+- Only .pdf files are supported for document uploads.
 - The chatbot relies on Cohere’s LLM, so you need a valid API key.
 - Uploaded documents are stored locally in ./data/.
 - In order to access the admin widget to upload .pdf files, you need to create a bcrypt hash of a password and store it under ADMIN_PASSWORD_HASH in .streamlit/secrets.toml file:
