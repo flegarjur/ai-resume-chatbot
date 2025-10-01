@@ -1,3 +1,5 @@
+import logging
+import os
 from langchain_cohere import ChatCohere, CohereEmbeddings
 from langchain_chroma import Chroma
 from langchain.prompts import ChatPromptTemplate
@@ -7,9 +9,6 @@ from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_community.document_loaders.blob_loaders import Blob
 from langchain_community.document_loaders.parsers import PyPDFParser
 from dotenv import load_dotenv
-import logging
-import os
-
 
 # --- Logging setup ---
 logging.basicConfig(level=logging.INFO)

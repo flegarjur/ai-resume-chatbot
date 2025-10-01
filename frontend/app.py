@@ -1,6 +1,7 @@
 import streamlit as st
 import requests
 import bcrypt
+import os
 from language import LANG
 
 # --- Load secrets ---
@@ -32,7 +33,7 @@ if col3.button("🔒"):
     st.session_state.show_admin_section = not st.session_state.show_admin_section
 
 with col1:
-    st.image("images/profile.png", width=120)
+    st.image(os.path.join(os.path.dirname(__file__), "images/profile.png"), width=120)
 
 with col2:
     st.markdown(

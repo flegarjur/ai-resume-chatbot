@@ -1,10 +1,10 @@
+import logging
+import os
 from fastapi import FastAPI, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from .chatbot import retrieve_document, store_document, parse_pdf, ask_question
 from pydantic import BaseModel
 from typing import List
-import logging
-import os
 
 # --- Logging setup ---
 logging.basicConfig(level=logging.INFO)
